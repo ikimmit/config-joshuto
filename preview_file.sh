@@ -69,25 +69,25 @@ done
 
 handle_extension() {
 	case "${FILE_EXTENSION_LOWER}" in
-	## Archive
 	a | ace | alz | arc | arj | bz | bz2 | cab | cpio | deb | gz | jar | lha | lz | lzh | lzma | lzo | \
 		rpm | rz | t7z | tar | tbz | tbz2 | tgz | tlz | txz | tZ | tzo | war | xpi | xz | Z | zip)
 		atool --list -- "${FILE_PATH}" && exit 0
 		bsdtar --list --file "${FILE_PATH}" && exit 0
 		exit 1
 		;;
+
 	rar)
 		## Avoid password prompt by providing empty password
 		unrar lt -p- -- "${FILE_PATH}" && exit 0
 		exit 1
 		;;
+
 	7z)
 		## Avoid password prompt by providing empty password
 		7z l -p -- "${FILE_PATH}" && exit 0
 		exit 1
 		;;
 
-		## PDF
 	pdf)
 		## Preview as text conversion
 		pdftotext -l 10 -nopgbrk -q -- "${FILE_PATH}" - |
@@ -98,13 +98,11 @@ handle_extension() {
 		exit 1
 		;;
 
-		## BitTorrent
 	torrent)
 		transmission-show -- "${FILE_PATH}" && exit 0
 		exit 1
 		;;
 
-		## OpenDocument
 	odt | sxw)
 		## Preview as text conversion
 		odt2txt "${FILE_PATH}" && exit 0
@@ -112,13 +110,13 @@ handle_extension() {
 		pandoc -s -t markdown -- "${FILE_PATH}" && exit 0
 		exit 1
 		;;
+
 	ods | odp)
 		## Preview as text conversion (unsupported by pandoc for markdown)
 		odt2txt "${FILE_PATH}" && exit 0
 		exit 1
 		;;
 
-		## XLSX
 	xlsx)
 		## Preview as csv conversion
 		## Uses: https://github.com/dilshod/xlsx2csv
@@ -126,7 +124,6 @@ handle_extension() {
 		exit 1
 		;;
 
-		## HTML
 	htm | html | xhtml)
 		## Preview as text conversion
 		w3m -dump "${FILE_PATH}" && exit 0
@@ -135,14 +132,11 @@ handle_extension() {
 		pandoc -s -t markdown -- "${FILE_PATH}" && exit 0
 		;;
 
-		## JSON
 	json | ipynb)
 		jq --color-output . "${FILE_PATH}" && exit 0
 		python -m json.tool -- "${FILE_PATH}" && exit 0
 		;;
 
-		## Direct Stream Digital/Transfer (DSDIFF) and wavpack aren't detected
-		## by file(1).
 	dff | dsf | wv | wvc)
 		mediainfo "${FILE_PATH}" && exit 0
 		exiftool "${FILE_PATH}" && exit 0
@@ -154,7 +148,6 @@ handle_mime() {
 	local mimetype="${1}"
 
 	case "${mimetype}" in
-	## RTF and DOC
 	text/rtf | *msword)
 		## Preview as text conversion
 		## note: catdoc does not always work for .doc files
@@ -166,6 +159,7 @@ handle_mime() {
 		## DOCX, ePub, FB2 (using markdown)
 		## You might want to remove "|epub" and/or "|fb2" below if you have
 		## uncommented other methods to preview those formats
+
 	*wordprocessingml.document | */epub+zip | */x-fictionbook+xml)
 		## Preview as markdown conversion
 		pandoc -s -t markdown -- "${FILE_PATH}" | bat -l markdown \
@@ -175,14 +169,12 @@ handle_mime() {
 		exit 1
 		;;
 
-		## E-mails
 	message/rfc822)
 		## Parsing performed by mu: https://github.com/djcb/mu
 		mu view -- "${FILE_PATH}" && exit 0
 		exit 1
 		;;
 
-		## XLS
 	*ms-excel)
 		## Preview as csv conversion
 		## xls2csv comes with catdoc:
@@ -191,7 +183,6 @@ handle_mime() {
 		exit 1
 		;;
 
-		## Text
 	text/* | */xml)
 		bat --color=always --paging=never \
 			--style=plain \
@@ -201,7 +192,6 @@ handle_mime() {
 		exit 1
 		;;
 
-		## DjVu
 	image/vnd.djvu)
 		## Preview as text conversion (requires djvulibre)
 		djvutxt "${FILE_PATH}" | fmt -w "${PREVIEW_WIDTH}" && exit 0
@@ -209,14 +199,22 @@ handle_mime() {
 		exit 1
 		;;
 
-		## Image
-	image/*)
+	image/png | image/jpeg)
 		## Preview as text conversion
+		chafa --size=${PREVIEW_WIDTH}x${PREVIEW_HEIGHT} "${FILE_PATH}" && exit 0
+
+		# Don't work yet:
+		# chafa -f iterm "${FILE_PATH}" && exit 0
+		# imgcat "${FILE_PATH}" && exit 0
+		exit 1
+		;;
+
+	image/*)
+		## Preview as exif data
 		exiftool "${FILE_PATH}" && exit 0
 		exit 1
 		;;
 
-		## Video and audio
 	video/* | audio/*)
 		mediainfo "${FILE_PATH}" && exit 0
 		exiftool "${FILE_PATH}" && exit 0
