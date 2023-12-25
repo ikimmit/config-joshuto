@@ -7,9 +7,17 @@ keymap = [
   { keys = ["T"], commands = ["new_tab --current"] },
   { keys = ["W"], commands = ["close_tab"] },
   { keys = ["ctrl+w"], commands = ["close_tab"] },
-  { keys = ["q"], commands = ["close_tab"] },
-  { keys = ["ctrl+c"], commands = ["quit"] },
-  { keys = ["Q"], commands = ["quit --output-current-directory"] },
+
+  # [ DEFAULT DISABLED
+  # { keys = ["q"], commands = ["close_tab"] },
+  # { keys = ["ctrl+c"], commands = ["quit"] },
+  # { keys = ["Q"], commands = ["quit --output-current-directory"] },
+  # ] DEFAULT DISABLED
+
+  # [ CUSTOM
+  { keys = ["q"], commands = ["quit --output-current-directory"] },
+  { keys = ["Q"], commands = ["close_tab"] },
+  # ] CUSTOM
 
   { keys = ["R"], commands = ["reload_dirlist"] },
   { keys = ["z", "h"], commands = ["toggle_hidden"] },
