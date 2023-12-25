@@ -140,6 +140,7 @@ keymap = [
 
   # Jump to my main folders
   { keys = ["g", "d", "e"], commands = ["cd ~/Desktop"] },
+  { keys = ["g", "d", "n"], commands = ["cd ~/Dropbox/code/namers"] },
   { keys = ["g", "d", "o"], commands = ["cd ~/Downloads"] },
   { keys = ["g", "d", "r"], commands = ["cd ~/Dropbox"] },
 
