@@ -199,8 +199,8 @@ handle_mime() {
 		exit 1
 		;;
 
-	image/png | image/jpeg)
-		## Preview as text conversion
+	image/png | image/jpeg | image/gif)
+		## Preview as "unicode art"
 		chafa --size=${PREVIEW_WIDTH}x${PREVIEW_HEIGHT} "${FILE_PATH}" && exit 0
 
 		# Don't work yet:
