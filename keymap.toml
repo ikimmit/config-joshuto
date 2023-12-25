@@ -133,11 +133,25 @@ keymap = [
   { keys = ["m", "U"], commands = ["linemode user | group"] },
   { keys = ["m", "p"], commands = ["linemode perm"] },
 
-  { keys = ["g", "r"], commands = ["cd /"] },
-  { keys = ["g", "c"], commands = ["cd ~/.config"] },
-  { keys = ["g", "d"], commands = ["cd ~/Downloads"] },
-  { keys = ["g", "e"], commands = ["cd /etc"] },
+  # Jump to config folder
+  { keys = ["g", "c", "c"], commands = ["cd ~/.config"] },
+  { keys = ["g", "c", "j"], commands = ["cd ~/.config/joshuto"] },
+  { keys = ["g", "c", "n"], commands = ["cd ~/.config/nvim/lua"] },
+
+  # Jump to my main folders
+  { keys = ["g", "d", "e"], commands = ["cd ~/Desktop"] },
+  { keys = ["g", "d", "o"], commands = ["cd ~/Downloads"] },
+  { keys = ["g", "d", "r"], commands = ["cd ~/Dropbox"] },
+
+  # Jump to most common work folders
+  { keys = ["g", "v", "f"], commands = ["cd ~/vl/code/fred"] },
+  { keys = ["g", "v", "v"], commands = ["cd ~/vl/code/"] },
+  { keys = ["g", "v", "w"], commands = ["cd ~/vl/code/wilma"] },
+
+  # Jump to usual places 
   { keys = ["g", "h"], commands = ["cd ~/"] },
+  { keys = ["g", "r"], commands = ["cd /"] },
+
   { keys = ["?"], commands = ["help"] },
 ]
 
