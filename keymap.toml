@@ -17,6 +17,7 @@ keymap = [
   # [ CUSTOM
   { keys = ["q"], commands = ["quit --output-current-directory"] },
   { keys = ["Q"], commands = ["close_tab"] },
+  { keys = ["v" ], commands = ["shell neovide %s"] },
   # ] CUSTOM
 
   { keys = ["R"], commands = ["reload_dirlist"] },
